@@ -1,0 +1,572 @@
+<!--
+personal-website.html
+Updated: Added project subcategories ("University Projects") and comments explaining how to move projects between categories.
+Instructions: Open this file in the canvas to view the full HTML. In this file I include clear comment markers (SEARCH FOR: "<!-- MAIN PROJECTS START -->", "<!-- SUBCATEGORY: UNIVERSITY START -->") showing changed/added parts.
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Xena Getmanovich — Portfolio</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Font Awesome (icons) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --cream: #fffaf2;
+      --text: #3b3b3b;
+      --accent: #b89f82; /* brown accent as requested */
+      --muted: #7b6f63;
+      --radius: 12px;
+      --container-w: 880px;
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--cream);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.55;
+    }
+
+    /* Container wrapper */
+    .wrap{
+      max-width:var(--container-w);
+      margin:0 auto;
+      padding:28px 20px 80px;
+    }
+
+    /* NAV */
+    .navbar{
+      background:transparent;
+      transition: background-color .32s ease, box-shadow .32s ease;
+    }
+    .navbar.scrolled{
+      background: rgba(255,250,242,0.98);
+      box-shadow: 0 6px 18px rgba(30,25,20,0.06);
+      backdrop-filter: blur(4px);
+    }
+    .brand-name{
+      font-weight:700;
+      color:var(--text);
+      letter-spacing:0.2px;
+    }
+    .nav-link{
+      color:var(--muted) !important;
+      font-weight:600;
+    }
+    .nav-link:hover{ color:var(--text) !important; }
+
+    /* HERO */
+    .hero{
+      text-align:center;
+      padding:48px 18px;
+    }
+    .profile-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:20px;
+    }
+    .profile{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      background:linear-gradient(180deg, rgba(184,159,130,0.12), rgba(184,159,130,0.05));
+      display:block;
+      overflow:hidden;
+      border:4px solid rgba(184,159,130,0.16);
+      box-shadow: 0 6px 24px rgba(22,20,18,0.06);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+      will-change: transform;
+    }
+    .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .hero h1{
+      margin:12px 0 6px;
+      font-weight:700;
+      font-size:28px;
+    }
+    .hero .subtitle{
+      margin:0 auto 14px;
+      max-width:760px;
+      color:var(--muted);
+      font-weight:400;
+    }
+
+    .socials a{
+      color:var(--muted);
+      margin:0 8px;
+      display:inline-block;
+      width:44px;height:44px;border-radius:10px;
+      line-height:44px;text-align:center;
+      transition: background .18s, color .18s, transform .18s;
+    }
+    .socials a:hover{
+      color:var(--text);
+      background: rgba(184,159,130,0.06);
+      transform:translateY(-4px);
+    }
+
+    /* SECTION TITLES */
+    .section-title{
+      text-align:center;
+      margin:42px 0 18px;
+      font-size:20px;
+      font-weight:700;
+      position:relative;
+    }
+    .section-title:after{
+      content:"";
+      width:60px;
+      height:4px;
+      background:var(--accent);
+      display:block;
+      margin:12px auto 0;
+      border-radius:8px;
+      opacity:.95;
+    }
+
+    /* PROJECT CARD (single-column) */
+    .project{
+      background:transparent;
+      border-radius:var(--radius);
+      padding:20px 12px 28px;
+      margin:18px 0;
+      text-align:center;
+    }
+    .project-title{
+      font-weight:700;
+      font-size:18px;
+      margin-bottom:10px;
+    }
+    .tags{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .tag-pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(184,159,130,0.08);
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      border:1px solid rgba(184,159,130,0.06);
+    }
+    .project-desc{
+      color:var(--muted);
+      margin:0 auto 14px;
+      max-width:720px;
+    }
+    .media-wrap{
+      width:85%;
+      margin:0 auto;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(22,20,18,0.04);
+      transition: transform .4s cubic-bezier(.2,.9,.2,1), box-shadow .3s;
+      will-change: transform;
+      background:#fff;
+    }
+    .media-wrap img, .media-wrap video{
+      display:block;
+      width:100%;
+      height:auto;
+      transform-origin:center center;
+    }
+    .divider{
+      height:1px;
+      background:rgba(0,0,0,0.04);
+      margin-top:18px;
+      margin-bottom:8px;
+    }
+
+    /* SUBCATEGORY LABEL */
+    .subcat-label{
+      text-transform:uppercase;
+      font-size:12px;
+      letter-spacing:1px;
+      color:var(--muted);
+      text-align:center;
+      margin-top:24px;
+      margin-bottom:8px;
+    }
+
+    /* CONTACT */
+    .contact{
+      text-align:center;
+      padding:26px 10px;
+    }
+    .contact .icons a{ margin:0 10px; color:var(--muted); font-size:20px; }
+    .contact .icons a:hover{ color:var(--text); transform:translateY(-3px); }
+
+    /* FOOTER */
+    footer{
+      text-align:center;
+      margin-top:28px;
+      color:var(--muted);
+      font-size:13px;
+      padding:18px 10px 40px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width:767px){
+      .profile{ width:130px;height:130px; }
+      .media-wrap{ width:95%; }
+      .wrap{ padding:18px 14px 60px; }
+      .hero h1{ font-size:22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="mainNav" class="navbar navbar-expand-lg fixed-top px-3" aria-label="Main navigation">
+    <div class="wrap d-flex align-items-center justify-content-between">
+      <a class="brand-name navbar-brand mb-0" href="#about">Xena Getmanovich</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse"
+        aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(0.2)"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navCollapse">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link px-3" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link px-3" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE WRAPPER -->
+  <main class="wrap" role="main">
+
+    <!-- HERO / ABOUT -->
+    <section id="about" class="hero" aria-labelledby="about-heading">
+      <div class="profile-wrap" data-aos="fade-up" data-aos-delay="80">
+        <!-- placeholder image (replace with Xena's image later) -->
+        <div class="profile" id="profile-anim">
+          <img src="data:image/svg+xml;utf8,
+            <svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
+              <rect width='100%' height='100%' fill='%23efe6dd'/>
+              <text x='50%' y='50%' font-size='48' font-family='Poppins,Arial' text-anchor='middle' alignment-baseline='central' fill='%23b89f82'>X</text>
+            </svg>"
+            alt="Profile picture placeholder — Xena Getmanovich">
+        </div>
+      </div>
+
+      <h1 id="about-heading" data-aos="fade-up" data-aos-delay="160">Hi — I'm <span style="color:var(--accent)">Xena Getmanovich</span></h1>
+      <p class="subtitle" data-aos="fade-up" data-aos-delay="220">
+        Software engineer early in career, passionate about building clean, thoughtful products.
+        I enjoy web development, graph theory-inspired tools, and data visualizations that help people understand complex information.
+      </p>
+
+      <div class="socials" data-aos="fade-up" data-aos-delay="280" aria-label="Social links">
+        <a href="https://github.com/XenaGetmanovich" title="GitHub (replace link)" aria-label="GitHub"><i class="fab fa-github fa-lg"></i></a>
+        <a href="www.linkedin.com/in/xena-getmanovich-56a733209" title="LinkedIn (replace link)" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+        <a href="mailto:xenagetmanovich@gmail.com" title="Email" aria-label="Email"><i class="fa-solid fa-envelope fa-lg"></i></a>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="mt-4" aria-labelledby="projects-heading">
+      <h2 id="projects-heading" class="section-title" data-aos="fade-up">Projects</h2>
+
+      <!-- MAIN PROJECTS START -->
+      <!-- These are the top-level projects (no subcategory). To move a project into a subcategory, cut its <article class="project">...</article> block
+           and paste it inside the desired subcategory container below (search for "SUBCATEGORY: UNIVERSITY START"). -->
+
+      <!-- Project A (top-level) -->
+      <article class="project" data-aos="fade-up" data-aos-delay="80" data-project-id="proj-a">
+        <div class="project-title">Interactive Graph Visualizer</div>
+        <div class="tags" aria-hidden="true">
+          <span class="tag-pill">JavaScript</span>
+          <span class="tag-pill">D3</span>
+          <span class="tag-pill">Graph Theory</span>
+          <span class="tag-pill">Medium</span>
+        </div>
+        <p class="project-desc">
+          A tool to visualize d-regular graphs and their spectral properties. Interactive layout, eigenvalue plotting,
+          and adjacency matrix view for study and teaching.
+        </p>
+
+        <div class="media-wrap" data-media-anim>
+          <!-- placeholder image -->
+          <img src="data:image/svg+xml;utf8,
+            <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+              <rect width='100%' height='100%' fill='%23f8f4ee' />
+              <text x='50%' y='50%' font-family='Poppins,Arial' font-size='36' fill='%237b6f63' text-anchor='middle' alignment-baseline='central'>
+                Graph Visualizer — screenshot placeholder
+              </text>
+            </svg>" alt="Project A screenshot placeholder">
+        </div>
+        <div class="divider" aria-hidden="true"></div>
+      </article>
+
+      <!-- Project B (top-level) -->
+      <article class="project" data-aos="fade-up" data-aos-delay="160" data-project-id="proj-b">
+        <div class="project-title">EMA Data Dashboard</div>
+        <div class="tags" aria-hidden="true">
+          <span class="tag-pill">React</span>
+          <span class="tag-pill">Python</span>
+          <span class="tag-pill">Data Viz</span>
+          <span class="tag-pill">Hard</span>
+        </div>
+        <p class="project-desc">
+          Dashboard for experience-sampling data with interactive filters, timeline visualizations, and CSV export for research analysis.
+        </p>
+
+        <div class="media-wrap" data-media-anim>
+          <!-- placeholder image -->
+          <img src="data:image/svg+xml;utf8,
+            <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+              <rect width='100%' height='100%' fill='%23f8f4ee' />
+              <text x='50%' y='50%' font-family='Poppins,Arial' font-size='36' fill='%237b6f63' text-anchor='middle' alignment-baseline='central'>
+                EMA Dashboard — screenshot placeholder
+              </text>
+            </svg>" alt="Project B screenshot placeholder">
+        </div>
+        <div class="divider" aria-hidden="true"></div>
+      </article>
+
+      <!-- Project C (top-level) -->
+      <article class="project" data-aos="fade-up" data-aos-delay="240" data-project-id="proj-c">
+        <div class="project-title">Combinatorics Utilities Library</div>
+        <div class="tags" aria-hidden="true">
+          <span class="tag-pill">Python</span>
+          <span class="tag-pill">Algorithms</span>
+          <span class="tag-pill">Education</span>
+          <span class="tag-pill">Easy</span>
+        </div>
+        <p class="project-desc">
+          A small library of combinatorics helpers and solvers to speed up problem exploration in coursework and prototyping.
+        </p>
+
+        <div class="media-wrap" data-media-anim>
+          <!-- placeholder image -->
+          <img src="data:image/svg+xml;utf8,
+            <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+              <rect width='100%' height='100%' fill='%23f8f4ee' />
+              <text x='50%' y='50%' font-family='Poppins,Arial' font-size='36' fill='%237b6f63' text-anchor='middle' alignment-baseline='central'>
+                Combinatorics Library — demo placeholder
+              </text>
+            </svg>" alt="Project C screenshot placeholder">
+        </div>
+        <div class="divider" aria-hidden="true"></div>
+      </article>
+      <!-- MAIN PROJECTS END -->
+
+
+      <!-- SUBCATEGORY: UNIVERSITY START -->
+      <!-- University Projects subcategory. This block was ADDED. To add more subcategories, copy this entire block and change the ID/label. -->
+      <div id="subcat-university">
+        <div class="subcat-label" data-aos="fade-up" data-aos-delay="80">University Projects</div>
+
+        <!-- Uni Project 1 -->
+        <article class="project" data-aos="fade-up" data-aos-delay="120" data-project-id="uni-1">
+          <div class="project-title">Graph Theory Course — Project</div>
+          <div class="tags" aria-hidden="true">
+            <span class="tag-pill">Python</span>
+            <span class="tag-pill">NetworkX</span>
+            <span class="tag-pill">Coursework</span>
+          </div>
+          <p class="project-desc">
+            Coursework project implementing algorithms for generating and testing properties of d-regular graphs.
+          </p>
+          <div class="media-wrap" data-media-anim>
+            <img src="data:image/svg+xml;utf8,
+              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+                <rect width='100%' height='100%' fill='%23f8f4ee' />
+                <text x='50%' y='50%' font-family='Poppins,Arial' font-size='36' fill='%237b6f63' text-anchor='middle' alignment-baseline='central'>
+                  University Project 1 — screenshot
+                </text>
+              </svg>" alt="University project 1 placeholder">
+          </div>
+          <div class="divider" aria-hidden="true"></div>
+        </article>
+
+        <!-- Uni Project 2 -->
+        <article class="project" data-aos="fade-up" data-aos-delay="160" data-project-id="uni-2">
+          <div class="project-title">Data Analysis Mini-Project</div>
+          <div class="tags" aria-hidden="true">
+            <span class="tag-pill">Pandas</span>
+            <span class="tag-pill">Visualization</span>
+            <span class="tag-pill">Research</span>
+          </div>
+          <p class="project-desc">
+            A short exploratory analysis using EMA-style data with plots and summary statistics for a course assignment.
+          </p>
+          <div class="media-wrap" data-media-anim>
+            <img src="data:image/svg+xml;utf8,
+              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+                <rect width='100%' height='100%' fill='%23f8f4ee' />
+                <text x='50%' y='50%' font-family='Poppins,Arial' font-size='36' fill='%237b6f63' text-anchor='middle' alignment-baseline='central'>
+                  University Project 2 — screenshot
+                </text>
+              </svg>" alt="University project 2 placeholder">
+          </div>
+          <div class="divider" aria-hidden="true"></div>
+        </article>
+
+        <!-- Uni Project 3 -->
+        <article class="project" data-aos="fade-up" data-aos-delay="200" data-project-id="uni-3">
+          <div class="project-title">Algorithm Implementation</div>
+          <div class="tags" aria-hidden="true">
+            <span class="tag-pill">C++</span>
+            <span class="tag-pill">Algorithms</span>
+            <span class="tag-pill">Coursework</span>
+          </div>
+          <p class="project-desc">
+            Implementation and benchmarking of combinatorial algorithms as part of an algorithms course.
+          </p>
+          <div class="media-wrap" data-media-anim>
+            <img src="data:image/svg+xml;utf8,
+              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+                <rect width='100%' height='100%' fill='%23f8f4ee' />
+                <text x='50%' y='50%' font-family='Poppins,Arial' font-size='36' fill='%237b6f63' text-anchor='middle' alignment-baseline='central'>
+                  University Project 3 — screenshot
+                </text>
+              </svg>" alt="University project 3 placeholder">
+          </div>
+          <div class="divider" aria-hidden="true"></div>
+        </article>
+
+      </div>
+      <!-- SUBCATEGORY: UNIVERSITY END -->
+
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact" aria-labelledby="contact-heading">
+      <h3 id="contact-heading" class="section-title" data-aos="fade-up">Let's Connect</h3>
+      <p data-aos="fade-up" data-aos-delay="80" style="color:var(--muted);margin-top:8px;">
+        I'm open to collaborations and early-career opportunities. Reach me on GitHub or LinkedIn, or drop an email.
+      </p>
+
+      <div class="icons mt-3" data-aos="fade-up" data-aos-delay="120">
+        <a href="#" aria-label="GitHub (replace link)"><i class="fab fa-github fa-2x"></i></a>
+        <a href="#" aria-label="LinkedIn (replace link)"><i class="fab fa-linkedin fa-2x"></i></a>
+        <a href="mailto:hello@example.com" aria-label="Email"><i class="fa-solid fa-envelope fa-2x"></i></a>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Xena Getmanovich — Built with ❤️ using Bootstrap.
+    </footer>
+
+  </main>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+    // Initialize AOS for subtle fade animations
+    AOS.init({
+      duration: 700,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 80,
+    });
+
+    // Navbar background toggle on scroll
+    (function() {
+      const nav = document.getElementById('mainNav');
+      const offset = 20;
+      function check(){
+        if(window.scrollY > offset) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+      }
+      check();
+      window.addEventListener('scroll', check);
+    })();
+
+    // Subtle scroll-based transform for profile & media elements
+    (function(){
+      const ease = t => t<.5 ? 2*t*t : -1 + (4-2*t)*t; // gentle ease
+      const profile = document.getElementById('profile-anim');
+      const mediaEls = document.querySelectorAll('[data-media-anim]');
+
+      function elementProgress(el){
+        const rect = el.getBoundingClientRect();
+        const h = window.innerHeight || document.documentElement.clientHeight;
+        const centerY = rect.top + rect.height/2;
+        const progress = 1 - (centerY / h);
+        return Math.max(0, Math.min(1, progress));
+      }
+
+      function update(){
+        if(profile){
+          const p = elementProgress(profile);
+          const t = ease(p);
+          const scale = 1 + 0.035 * t;
+          const rot = 6 * (t - 0.5);
+          profile.style.transform = `rotate(${rot}deg) scale(${scale})`;
+        }
+
+        mediaEls.forEach(el=>{
+          const p = elementProgress(el);
+          const t = ease(p);
+          const scale = 1 + 0.045 * t;
+          const rot = 4 * (t - 0.5);
+          el.style.transform = `rotate(${rot}deg) scale(${scale})`;
+          const shadowAlpha = 0.04 + 0.06 * t;
+          el.style.boxShadow = `0 ${8 + 18*t}px ${20 + 24*t}px rgba(22,20,18,${shadowAlpha})`;
+        });
+      }
+
+      let ticking = false;
+      function onScroll(){
+        if(!ticking){
+          window.requestAnimationFrame(()=>{
+            update();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      update();
+      window.addEventListener('scroll', onScroll, {passive:true});
+      window.addEventListener('resize', onScroll);
+    })();
+
+    // Smooth scrolling for nav links (modern browsers)
+    (function(){
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const target = document.querySelector(this.getAttribute('href'));
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            const bsCollapse = bootstrap.Collapse.getInstance(document.getElementById('navCollapse'));
+            if(bsCollapse && window.innerWidth < 992){
+              bsCollapse.hide();
+            }
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
